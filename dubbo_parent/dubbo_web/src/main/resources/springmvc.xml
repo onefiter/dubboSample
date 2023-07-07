@@ -36,9 +36,9 @@
         </mvc:message-converters>
     </mvc:annotation-driven>
     <!--配置dubbo应用程序名称-->
-    <dubbo:application name="meinian_web"></dubbo:application>
+    <dubbo:application name="dubbo_web"></dubbo:application>
     <dubbo:registry address="zookeeper://127.0.0.1:2181"></dubbo:registry>
-    <dubbo:annotation package="com.atguigu.controller"></dubbo:annotation>
+    <dubbo:annotation package="com.onefiter.controller"></dubbo:annotation>
 
     <!--配置连接超时 启动时候不要检查-->
     <dubbo:consumer timeout="600000" check="false"></dubbo:consumer>
