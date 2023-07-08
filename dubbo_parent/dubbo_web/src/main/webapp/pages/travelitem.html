@@ -228,10 +228,38 @@
         },
         //钩子函数，VUE对象初始化完成后自动执行
         created() {
+            this.findPage();
         },
         methods: {
             //编辑
             handleEdit() {
+                //表单校验
+                this.$refs['dataEditForm'].validate((valid) => {
+                    if (valid) {
+                        //表单校验通过，发送请求
+                        axios.post("/travelItem/edit.do", this.formData).then((response) => {
+                            //隐藏编辑窗口
+                            this.dialogFormVisible4Edit = false;
+                            if (response.data.flag) {
+                                //编辑成功，弹出成功提示信息
+                                this.$message({
+                                    message: response.data.message,
+                                    type: 'success'
+                                });
+                            } else {
+                                //编辑失败，弹出错误提示信息
+                                this.$message.error(response.data.message);
+                            }
+                        }).finally(() => {
+                            //重新发送请求查询分页数据
+                            this.findPage();
+                        });
+                    } else {
+                        //表单校验失败
+                        this.$message.error("表单数据校验失败");
+                        return false;
+                    }
+                });
             },
             //添加
             handleAdd() {
@@ -263,6 +291,18 @@
             },
             //分页查询
             findPage() {
+                //分页参数
+                var param = {
+                    currentPage: this.pagination.currentPage,//页码
+                    pageSize: this.pagination.pageSize,//每页显示的记录数
+                    queryString: this.pagination.queryString//查询条件
+                };
+                //请求后台
+                axios.post("/travelItem/findPage.do", param).then((response) => {
+                    //为模型数据赋值，基于VUE的双向绑定展示到页面
+                    this.dataList = response.data.rows;
+                    this.pagination.total = response.data.total;
+                });
             },
             // 重置表单
             resetForm() {
@@ -275,9 +315,23 @@
             },
             // 弹出编辑窗口
             handleUpdate(row) {
+                //发送请求获取自由行信息
+                axios.get("/travelItem/findById.do?id=" + row.id).then((res) => {
+                    if (res.data.flag) {
+                        //设置编辑窗口属性，dialogFormVisible4Edit为true表示显示
+                        this.dialogFormVisible4Edit = true;
+                        //为模型数据设置值，基于VUE双向数据绑定回显到页面
+                        this.formData = res.data.data;
+                    } else {
+                        this.$message.error("获取数据失败，请刷新当前页面");
+                    }
+                });
             },
             //切换页码
             handleCurrentChange(currentPage) {
+                // currentPage为切换后的页码
+                this.pagination.currentPage = currentPage;
+                this.findPage();
             },
             // 删除
             handleDelete(row) {
@@ -288,6 +342,20 @@
                     center: true
                 }).then(() => {
                     // 发送ajax请求，执行删除
+                    axios.get("/travelItem/delete.do?id=" + row.id).then((res) => {
+                        if (res.data.flag) {
+                            //删除成功
+                            this.$message({
+                                message: res.data.message,
+                                type: 'success'
+                            });
+                            //调用分页，获取最新分页数据
+                            this.findPage();
+                        } else {
+                            //删除失败
+                            this.$message.error(res.data.message);
+                        }
+                    });
 
 
                     this.$message({
