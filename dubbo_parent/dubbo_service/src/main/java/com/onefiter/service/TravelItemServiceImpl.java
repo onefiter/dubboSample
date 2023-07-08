@@ -1,9 +1,9 @@
-package service.impl;
+package com.onefiter.service;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.onefiter.dao.TravelItemDao;
 import com.onefiter.pojo.TravelItem;
-import com.onefiter.serivce.TravelItemService;
+import com.onefiter.service.TravelItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 

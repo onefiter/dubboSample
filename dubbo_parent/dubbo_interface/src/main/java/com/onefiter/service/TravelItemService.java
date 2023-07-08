@@ -1,4 +1,4 @@
-package com.onefiter.serivce;
+package com.onefiter.service;
 
 import com.onefiter.pojo.TravelItem;
 

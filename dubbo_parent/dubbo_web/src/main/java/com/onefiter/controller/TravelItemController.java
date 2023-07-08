@@ -1,10 +1,10 @@
-package controller;
+package com.onefiter.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.onefiter.constant.MessageConstant;
 import com.onefiter.entity.Result;
 import com.onefiter.pojo.TravelItem;
-import com.onefiter.serivce.TravelItemService;
+import com.onefiter.service.TravelItemService;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
