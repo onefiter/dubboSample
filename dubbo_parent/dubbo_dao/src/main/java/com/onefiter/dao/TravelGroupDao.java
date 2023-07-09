@@ -23,4 +23,6 @@ public interface TravelGroupDao {
 
     void edit(TravelGroup travelGroup);
 
+    List<TravelGroup> findAll();
+
 }

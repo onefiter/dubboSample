@@ -61,4 +61,16 @@ public class TravelGroupController {
     }
 
 
+    //查询所有
+    @RequestMapping("/findAll")
+    public Result findAll(){
+        // 查询所有的跟团游
+        List<TravelGroup> travelGroupList = travelGroupService.findAll();
+        if(travelGroupList != null && travelGroupList.size() > 0){
+            Result result = new Result(true, MessageConstant.QUERY_SETMEAL_SUCCESS,travelGroupList);
+            return result;
+        }
+        return new Result(false,MessageConstant.QUERY_SETMEAL_FAIL);
+    }
+
 }

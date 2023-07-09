@@ -72,5 +72,7 @@
         delete from t_travelgroup_travelitem where travelgroup_id =#{id}
     </delete>
 
-
+    <select id="findAll" resultType="com.onefiter.pojo.TravelGroup">
+        select * from t_travelgroup
+    </select>
 </mapper>

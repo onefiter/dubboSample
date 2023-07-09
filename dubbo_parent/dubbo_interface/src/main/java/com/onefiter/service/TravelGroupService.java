@@ -16,4 +16,6 @@ public interface TravelGroupService {
 
     List<Integer> findTravelItemIdByTravelgroupId(Integer id);
 
+    List<TravelGroup> findAll();
+
 }
