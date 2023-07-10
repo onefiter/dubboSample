@@ -259,6 +259,14 @@
         methods: {
             //文件上传成功后的钩子，response为服务端返回的值，file为当前上传的文件封装成的js对象
             handleAvatarSuccess(response, file) {
+                // 对imageUrl赋值，将图片显示到文件上传的框中，进行浏览
+                this.imageUrl = "http://rxissnuyv.hb-bkt.clouddn.com/" + response.data; // 用于显示
+                this.$message({
+                    message: response.message,
+                    type: response.flag ? 'success' : 'error'
+                });
+                //设置模型数据（图片名称），后续提交ajax请求时会提交到后台最终保存到数据库
+                this.formData.img = response.data; // 用于保存
             },
             //上传图片之前执行
             beforeAvatarUpload(file) {
@@ -274,22 +282,34 @@
             },
             //添加
             handleAdd() {
-                axios.post("/setmeal/add.do?travelgroupIds=" + this.travelgroupIds,this.formData).then((response)=> {
+                axios.post("/setmeal/add.do?travelgroupIds=" + this.travelgroupIds, this.formData).then((response) => {
                     this.dialogFormVisible = false;
-                    if(response.data.flag){
+                    if (response.data.flag) {
                         this.$message({
                             message: response.data.message,
                             type: 'success'
                         });
-                    }else{
+                    } else {
                         this.$message.error(response.data.message);
                     }
-                }).finally(()=> {
+                }).finally(() => {
                     this.findPage();
                 });
             },
             //分页查询
             findPage() {
+                //分页参数
+                var param = {
+                    currentPage:this.pagination.currentPage,//页码
+                    pageSize:this.pagination.pageSize,//每页显示的记录数
+                    queryString:this.pagination.queryString//查询条件
+                };
+                //请求后台
+                axios.post("/setmeal/findPage.do",param).then((response)=> {
+                    //为模型数据赋值，基于VUE的双向绑定展示到页面
+                    this.dataList = response.data.rows;
+                    this.pagination.total = response.data.total;
+                });
             },
             // 重置表单
             resetForm() {
@@ -306,16 +326,19 @@
             handleCreate() {
                 this.dialogFormVisible = true;
                 this.resetForm();
-                axios.get("/travelgroup/findAll.do").then((res)=> {
-                    if(res.data.flag){
+                axios.get("/travelgroup/findAll.do").then((res) => {
+                    if (res.data.flag) {
                         this.tableData = res.data.data;
-                    }else{
+                    } else {
                         this.$message.error(res.data.message);
                     }
                 });
             },
             //切换页码
             handleCurrentChange(currentPage) {
+                //currentPage为切换后的页码
+                this.pagination.currentPage = currentPage;
+                this.findPage();
             }
         }
     })

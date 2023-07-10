@@ -16,6 +16,7 @@
         <module>dubbo_interface</module>
         <module>dubbo_service</module>
         <module>dubbo_web</module>
+        <module>dubbo_jobs</module>
     </modules>
 
     <!-- 集中定义依赖版本号 -->

@@ -20,4 +20,13 @@
         values (#{setmeal_id},#{travelgroup_id})
     </insert>
 
+    <select id="findPage" parameterType="string" resultType="com.onefiter.pojo.Setmeal">
+        select * from t_setmeal
+        <where>
+            <if test="value!=null and value.length>0">
+                code=#{value} or name like concat('%',#{value},'%') or helpCode=#{value}
+            </if>
+        </where>
+    </select>
+
 </mapper>

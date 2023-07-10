@@ -3,6 +3,8 @@ package com.onefiter.controller;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.onefiter.constant.MessageConstant;
 import com.onefiter.constant.RedisConstant;
+import com.onefiter.entity.PageResult;
+import com.onefiter.entity.QueryPageBean;
 import com.onefiter.entity.Result;
 import com.onefiter.pojo.Setmeal;
 import com.onefiter.service.SetmealService;
@@ -61,5 +63,16 @@ public class SetmealController {
         }
         //新增套餐成功
         return new Result(true,MessageConstant.ADD_SETMEAL_SUCCESS);
+    }
+
+    //分页查询
+    @RequestMapping("/findPage")
+    public PageResult findPage(@RequestBody QueryPageBean queryPageBean){
+        PageResult pageResult = setmealService.findPage(
+                queryPageBean.getCurrentPage(),
+                queryPageBean.getPageSize(),
+                queryPageBean.getQueryString()
+        );
+        return pageResult;
     }
 }

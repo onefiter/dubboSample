@@ -1,8 +1,11 @@
 package com.onefiter.service;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.onefiter.constant.RedisConstant;
 import com.onefiter.dao.SetmealDao;
+import com.onefiter.entity.PageResult;
 import com.onefiter.pojo.Setmeal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,5 +47,11 @@ public class SetmealServiceImpl implements SetmealService{
             map.put("setmeal_id",id);
             setmealDao.setSetmealAndTravelGroup(map);
         }
+    }
+
+    public PageResult findPage(Integer currentPage, Integer pageSize, String queryString) {
+        PageHelper.startPage(currentPage,pageSize);
+        Page<Setmeal> page = setmealDao.findPage(queryString);
+        return new PageResult(page.getTotal(),page.getResult());
     }
 }

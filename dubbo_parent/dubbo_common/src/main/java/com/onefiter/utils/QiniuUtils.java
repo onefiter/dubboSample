@@ -44,7 +44,7 @@ public class QiniuUtils {
     //上传文件
     public static void upload2Qiniu(byte[] bytes, String fileName){
         //构造一个带指定Zone对象的配置类
-        Configuration cfg = new Configuration(Zone.zone2());
+        Configuration cfg = new Configuration(Zone.zone1());
         //...其他参数参考类注释
         UploadManager uploadManager = new UploadManager(cfg);
 
